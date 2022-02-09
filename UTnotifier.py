@@ -15,7 +15,9 @@ print(Fore.BLUE + "  \___/  |_||_| |_|\___/ \__|_|_| |_|\___|_|    ")
 print(Fore.MAGENTA + "\n https://github.com/pacjo/UTnotifier \n")
 
 # WebDriver initialization
-driver = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+options.add_experimental_option("excludeSwitches", ["enable-logging"])
+driver = webdriver.Chrome(options=options)
 
 # Access UT account
 driver.get('https://app.usertesting.com/my_dashboard/available_tests_v3');
