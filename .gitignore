@@ -1,0 +1,4 @@
+.git
+
+# ignore all exe files (to avoid pushing webdrivers)
+*.exe
