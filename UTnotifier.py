@@ -35,5 +35,5 @@ while (True):
         print(Fore.RED + "NEW TEST AVAILABLE: " + driver.title[1:2])
 
     last_title = driver.title
-    time.sleep(5)
+    time.sleep(30)
     driver.refresh()
