@@ -25,15 +25,15 @@ print(Fore.GREEN + "Log in to continue...")
 
 while(driver.current_url != 'https://app.usertesting.com/my_dashboard/available_tests_v3'):
     time.sleep(1)
-print(Fore.GREEN + "Logged in successfully")
+print(Fore.GREEN + "Logged in successfully, waiting for tests...")
 
 # Look for available tests
 last_title = "Available tests - UserTesting"
 
-print(Fore.GREEN + "Ready, waiting for tests...")
 while (True):
     if ((last_title != driver.title) and (driver.title[0:1] == '(')):
         print(Fore.RED + "NEW TEST AVAILABLE: " + driver.title[1:2])
 
     last_title = driver.title
-    time.sleep(1)
+    time.sleep(5)
+    driver.refresh()
