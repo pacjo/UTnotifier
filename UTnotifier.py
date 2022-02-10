@@ -37,9 +37,7 @@ filename = inspect.getframeinfo(inspect.currentframe()).filename
 file_path = os.path.dirname(os.path.abspath(filename))
 
 try:
-# if os.path.exists(f'{file_path}/credentials.json'):
     file = open(f'{file_path}/credentials.json', 'r')
-    # try:
     load = json.load(file)
     user = load.get('user')
     password = load.get('password')
@@ -58,6 +56,7 @@ print(Fore.GREEN + "Logged in successfully, waiting for tests...")
 # Look for available tests
 last_title = "Available tests - UserTesting"
 
+counter = 0
 while (True):
     time.sleep(20)
     if ((last_title != driver.title) and (driver.title[0:1] == '(') and (driver.title[1:2] > last_title[1:2])):
@@ -70,4 +69,5 @@ while (True):
     last_title = driver.title
     # print(last_title + "            " + driver.title)
     time.sleep(10)
-    driver.refresh()
+    counter += 1
+    if(counter >= 6): driver.refresh()
