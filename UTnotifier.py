@@ -1,7 +1,10 @@
 import os
 import time
+from datetime import datetime
 from selenium import webdriver
 from colorama import init, Fore
+from plyer.utils import platform
+from plyer import notification
 
 # Cosmetic
 init(autoreset=True)        # initialise Colorama
@@ -31,9 +34,15 @@ print(Fore.GREEN + "Logged in successfully, waiting for tests...")
 last_title = "Available tests - UserTesting"
 
 while (True):
-    if ((last_title != driver.title) and (driver.title[0:1] == '(')):
-        print(Fore.RED + "NEW TEST AVAILABLE: " + driver.title[1:2])
+    time.sleep(20)
+    if ((last_title != driver.title) and (driver.title[0:1] == '(') and (driver.title[1:2] != '0')):
+        print(Fore.BLUE + datetime.now().strftime("%H:%M:%S") + ": NEW TEST AVAILABLE: " + Fore.RED + driver.title[1:2])
+        notification.notify(
+            title="UTnotifier",
+            message="Number of available tests: " + driver.title[1:2]
+        )
 
     last_title = driver.title
-    time.sleep(30)
+    # print(last_title + "            " + driver.title)
+    time.sleep(10)
     driver.refresh()
