@@ -2,3 +2,6 @@
 
 # ignore all exe files (to avoid pushing webdrivers)
 *.exe
+
+# credentials file
+credentials.json
