@@ -11,3 +11,4 @@ Not tested on anything outside Chrome
 - check if one ***more*** or one ***less*** test is available
 - make *save credentials* option
 - make better logo
+- make option for disabling headless mode
