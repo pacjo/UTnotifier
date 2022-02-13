@@ -7,8 +7,8 @@ Before you run anything you need webdriver from https://chromedriver.chromium.or
 Not tested on anything outside Chrome
 
 # ToDo:
-- write better todo
-- check if one ***more*** or one ***less*** test is available
-- make *save credentials* option
-- make better logo
-- make option for disabling headless mode
+- [ ] write better todo
+- [ ] check if one ***more*** or one ***less*** test is available
+- [ ] make *save credentials* option (argument option?)
+- [ ] make better logo (fix offset)
+- [ ] make option for disabling headless mode (argument option?)
