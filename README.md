@@ -11,4 +11,4 @@ Not tested on anything outside Chrome
 - [ ] check if one ***more*** or one ***less*** test is available
 - [ ] make *save credentials* option (argument option?)
 - [ ] make better logo (fix offset)
-- [x] make option for disabling headless mode (argument option?)
+- [x] ~~make option for disabling headless mode (argument option?)~~
