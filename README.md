@@ -1,4 +1,4 @@
-![logo](logo.svg)
+![logo](logo.png)
 
 # Still work in progress
 
