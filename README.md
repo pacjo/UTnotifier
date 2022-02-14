@@ -21,3 +21,4 @@
 - [x] ~~make better logo (fix offset)~~
 - [x] ~~make option for disabling headless mode (argument option?)~~
 - [x] ~~add option to send notifications with MQTT (as sender.py ?)~~
+- [ ] make sure MQTT message are received
