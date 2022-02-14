@@ -1,13 +1,32 @@
 import os
 import time
 import json
+import signal
 import inspect
+import argparse
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from colorama import init, Fore
-from plyer.utils import platform
 from plyer import notification
+
+# Catch ctrl + c
+def ctrlc_handler(signum, frame):
+    print(Fore.RED + "Killing webdriver")
+    driver.quit()
+    print(Fore.RED + "Exiting")
+    exit()
+
+signal.signal(signal.SIGINT, ctrlc_handler)
+
+# Arguments (argparse) options
+parser = argparse.ArgumentParser(description='UserTesting.com notifier build with Selenium')
+parser.add_argument('-nh', '--no_headless', action='store_true',
+                    help='Disables headless mode')
+parser.add_argument('-ds', '--disable_saving', action='store_true',
+                    help='Stops script from saving login details')
+
+args = parser.parse_args()
 
 # Cosmetic
 init(autoreset=True)        # initialise Colorama
@@ -23,15 +42,21 @@ print(Fore.MAGENTA + "\n https://github.com/pacjo/UTnotifier \n")
 # WebDriver initialization
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
+if (args.no_headless == True):
+    options.add_argument("window-size=900,900")
+else:
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
 
 try:
     driver = webdriver.Chrome(options=options)
+    print(Fore.GREEN + "WebDriver started")
 except:
-  print(Fore.RED + "Chrome WebDriver doesn't appear to be available. Make sure it's in PATH or in the script directory")
-  exit()
+    print(Fore.RED + "Chrome WebDriver doesn't appear to be available. Make sure it's in PATH or in the script directory")
+    exit()
 
 # Access UT account
-driver.get('https://app.usertesting.com/my_dashboard/available_tests_v3');
+driver.get('https://app.usertesting.com/my_dashboard/available_tests_v3')
 
 filename = inspect.getframeinfo(inspect.currentframe()).filename
 file_path = os.path.dirname(os.path.abspath(filename))
@@ -49,17 +74,20 @@ try:
 except:
     print(Fore.GREEN + "Log in to continue...")
 
-while(driver.current_url != 'https://app.usertesting.com/my_dashboard/available_tests_v3'):
+while (driver.current_url != 'https://app.usertesting.com/my_dashboard/available_tests_v3'):
     time.sleep(1)
 print(Fore.GREEN + "Logged in successfully, waiting for tests...")
 
 # Look for available tests
 last_title = "Available tests - UserTesting"
-
+last_count = 0
 counter = 0
+
 while (True):
     time.sleep(20)
-    if ((last_title != driver.title) and (driver.title[0:1] == '(') and (driver.title[1:2] > last_title[1:2])):
+    if ((last_title != driver.title) and (driver.title[0:1] == '(')):
+        last_count = int(driver.title[1:2])
+        # if (int(driver.title[1:2]) > last_count):
         print(Fore.BLUE + datetime.now().strftime("%H:%M:%S") + ": NEW TEST AVAILABLE: " + Fore.RED + driver.title[1:2])
         notification.notify(
             title="UTnotifier",
@@ -70,4 +98,4 @@ while (True):
     # print(last_title + "            " + driver.title)
     time.sleep(10)
     counter += 1
-    if(counter >= 6): driver.refresh()
+    if (counter >= 6): driver.refresh()
