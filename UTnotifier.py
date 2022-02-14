@@ -25,6 +25,10 @@ parser.add_argument('-nh', '--no_headless', action='store_true',
                     help='Disables headless mode')
 parser.add_argument('-ds', '--disable_saving', action='store_true',
                     help='Stops script from saving login details')
+parser.add_argument('-dm', '--disable_mqtt', action='store_true',
+                    help='Stops script from publishing data to mqtt server')
+parser.add_argument('-d', '--debug', action='store_true',
+                    help='Shows debug messages like refresh information')
 
 args = parser.parse_args()
 
@@ -47,6 +51,8 @@ if (args.no_headless == True):
 else:
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
+
+if (args.debug == True): print(Fore.BLUE + "Debugging is enabled, remove \"--debug\" to disable it")
 
 try:
     driver = webdriver.Chrome(options=options)
@@ -93,9 +99,13 @@ while (True):
             title="UTnotifier",
             message="Number of available tests: " + driver.title[1:2]
         )
+        if (args.disable_mqtt == False): os.system("python sender.py " + driver.title[1:2])
 
     last_title = driver.title
     # print(last_title + "            " + driver.title)
     time.sleep(10)
     counter += 1
-    if (counter >= 6): driver.refresh()
+    if (counter >= 6):
+        driver.refresh()
+        counter = 0
+        if (args.debug == True): print(Fore.BLUE + datetime.now().strftime("%H:%M:%S") + ": Page refreshed")
