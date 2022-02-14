@@ -2,3 +2,4 @@ plyer
 argparse
 selenium
 colorama
+paho-mqtt
