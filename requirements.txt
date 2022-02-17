@@ -1,4 +1,5 @@
 plyer
+keyboard
 argparse
 selenium
 colorama
