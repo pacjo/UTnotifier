@@ -3,6 +3,7 @@ import time
 import json
 import signal
 import inspect
+import keyboard
 import argparse
 from datetime import datetime
 from selenium import webdriver
@@ -10,14 +11,21 @@ from selenium.webdriver.common.by import By
 from colorama import init, Fore
 from plyer import notification
 
-# Catch ctrl + c
+# Register keyboard events handlers
 def ctrlc_handler(signum, frame):
     print(Fore.RED + "Killing webdriver")
     driver.quit()
     print(Fore.RED + "Exiting")
     exit()
 
+def r_handler():
+    if (driver.current_url == 'https://app.usertesting.com/my_dashboard/available_tests_v3'):
+        driver.refresh()
+        print(Fore.CYAN + "R key detected, current number of tests: " + str(last_count))
+    else: print(Fore.RED + "Page has not loaded yet")
+
 signal.signal(signal.SIGINT, ctrlc_handler)
+keyboard.on_press_key("r", lambda _: r_handler())
 
 # Arguments (argparse) options
 parser = argparse.ArgumentParser(description='UserTesting.com notifier build with Selenium')
