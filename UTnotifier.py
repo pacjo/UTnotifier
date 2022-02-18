@@ -12,24 +12,35 @@ from colorama import init, Fore
 from plyer import notification
 
 # Register keyboard events handlers
-def ctrlc_handler(signum, frame):
+def ctrlcHandler(signum, frame):
     print(Fore.RED + "Killing webdriver")
+    driver.close()
     driver.quit()
     print(Fore.RED + "Exiting")
     exit()
 
-def r_handler():
+def rHandler():
     if (driver.current_url == 'https://app.usertesting.com/my_dashboard/available_tests_v3'):
         driver.refresh()
-        print(Fore.CYAN + "R key detected, current number of tests: " + str(last_count))
+        print(Fore.CYAN + "R key detected, current number of tests: " + str(numberOfTests()))
     else: print(Fore.RED + "Page has not loaded yet")
 
-signal.signal(signal.SIGINT, ctrlc_handler)
-keyboard.on_press_key("r", lambda _: r_handler())
+signal.signal(signal.SIGINT, ctrlcHandler)
+keyboard.on_press_key("r", lambda _: rHandler())
+
+# General purpose functions
+def numberOfTests():
+    if (driver.title[0:1] == '('):
+        return int(driver.title[1:2])
+    else:
+        return 0
+
+def sendMQTTMessage(payload):
+    os.system("python sender.py " + payload)
 
 # Arguments (argparse) options
 parser = argparse.ArgumentParser(description='UserTesting.com notifier build with Selenium')
-parser.add_argument('-nh', '--no_headless', action='store_true',
+parser.add_argument('-dh', '--disable_headless', action='store_true',
                     help='Disables headless mode')
 parser.add_argument('-ds', '--disable_saving', action='store_true',
                     help='Stops script from saving login details')
@@ -54,13 +65,13 @@ print(Fore.MAGENTA + "\n https://github.com/pacjo/UTnotifier \n")
 # WebDriver initialization
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
-if (args.no_headless == True):
+if (args.disable_headless == True):
     options.add_argument("window-size=900,900")
 else:
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
 
-if (args.debug == True): print(Fore.BLUE + "Debugging is enabled, remove \"--debug\" to disable it")
+if (args.debug == True): print(Fore.BLUE + "Debugging is enabled, remove \"--debug\" or \"-d\" to disable it")
 
 try:
     driver = webdriver.Chrome(options=options)
@@ -93,25 +104,22 @@ while (driver.current_url != 'https://app.usertesting.com/my_dashboard/available
 print(Fore.GREEN + "Logged in successfully, waiting for tests...")
 
 # Look for available tests
-last_title = "Available tests - UserTesting"
 last_count = 0
 counter = 0
 
 while (True):
-    time.sleep(20)
-    if ((last_title != driver.title) and (driver.title[0:1] == '(')):
-        last_count = int(driver.title[1:2])
-        # if (int(driver.title[1:2]) > last_count):
-        print(Fore.BLUE + datetime.now().strftime("%H:%M:%S") + ": NEW TEST AVAILABLE: " + Fore.RED + driver.title[1:2])
+    time.sleep(10)
+    if (numberOfTests() > last_count):
+        last_count = numberOfTests()
+        print(Fore.BLUE + datetime.now().strftime("%H:%M:%S") + ": NEW TEST AVAILABLE: " + Fore.RED + str(last_count))
         notification.notify(
             title="UTnotifier",
-            message="Number of available tests: " + driver.title[1:2]
+            message="Number of available tests: " + str(last_count)
         )
-        if (args.disable_mqtt == False): os.system("python sender.py " + driver.title[1:2])
+        if (args.disable_mqtt == False): sendMQTTMessage(str(last_count))
 
-    last_title = driver.title
-    # print(last_title + "            " + driver.title)
-    time.sleep(10)
+    last_count = numberOfTests()
+    time.sleep(20)
     counter += 1
     if (counter >= 6):
         driver.refresh()
