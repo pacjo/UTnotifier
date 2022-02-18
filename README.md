@@ -10,6 +10,8 @@
 
 `--disable_saving` - disables saving of login details (currently not implemented)
 
+`--disable_notifications` - disables showing notification when new test is available
+
 `--disable_mqtt` - disables publishing the test count to MQTT server
 
 `--debug` - shows additional information like page refresh
