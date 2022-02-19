@@ -46,6 +46,8 @@ parser.add_argument('-ds', '--disable_saving', action='store_true',
                     help='Stops script from saving login details')
 parser.add_argument('-dm', '--disable_mqtt', action='store_true',
                     help='Stops script from publishing data to mqtt server')
+parser.add_argument('-dn', '--disable_notifications', action='store_true',
+                    help='Stops script showing system notifications')
 parser.add_argument('-d', '--debug', action='store_true',
                     help='Shows debug messages like refresh information')
 
@@ -65,6 +67,7 @@ print(Fore.MAGENTA + "\n https://github.com/pacjo/UTnotifier \n")
 # WebDriver initialization
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
+options.add_argument("--mute-audio")
 if (args.disable_headless == True):
     options.add_argument("window-size=900,900")
 else:
@@ -112,10 +115,11 @@ while (True):
     if (numberOfTests() > last_count):
         last_count = numberOfTests()
         print(Fore.BLUE + datetime.now().strftime("%H:%M:%S") + ": NEW TEST AVAILABLE: " + Fore.RED + str(last_count))
-        notification.notify(
-            title="UTnotifier",
-            message="Number of available tests: " + str(last_count)
-        )
+        if(args.disable_notifications == False):
+            notification.notify(
+                title="UTnotifier",
+                message="Number of available tests: " + str(last_count)
+            )
         if (args.disable_mqtt == False): sendMQTTMessage(str(last_count))
 
     last_count = numberOfTests()
