@@ -14,7 +14,7 @@ from plyer import notification
 # Register keyboard events handlers
 def ctrlcHandler(signum, frame):
     print(Fore.RED + "Killing webdriver")
-    driver.close()
+    # driver.close()
     driver.quit()
     print(Fore.RED + "Exiting")
     exit()
@@ -22,7 +22,7 @@ def ctrlcHandler(signum, frame):
 def rHandler():
     if (driver.current_url == 'https://app.usertesting.com/my_dashboard/available_tests_v3'):
         driver.refresh()
-        print(Fore.CYAN + "R key detected, current number of tests: " + str(numberOfTests()))
+        print(Fore.CYAN + "R key detected, title: " + Fore.GREEN + driver.title + Fore.CYAN + ", number of tests: " + Fore.GREEN + str(numberOfTests()))
     else: print(Fore.RED + "Page has not loaded yet")
 
 signal.signal(signal.SIGINT, ctrlcHandler)
