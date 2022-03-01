@@ -25,3 +25,4 @@
 - [x] ~~add option to send notifications with MQTT (as sender.py ?)~~
 - [ ] make sure MQTT message are received
 - [ ] make script detect a difference between "1" and "10" in website title (now only looks at first digit)
+- [ ] add project icon
