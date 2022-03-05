@@ -100,7 +100,22 @@ try:
     time.sleep(0.5)
     driver.find_elements(By.CLASS_NAME, "btn")[1].click()
 except:
-    print(Fore.GREEN + "Log in to continue...")
+    print(Fore.GREEN + "Input the credentails than press enter " + Fore.RED + "in script window" + Fore.GREEN + " to continue")
+    input()
+    if (args.disable_saving != True):
+        file = open(f'{file_path}/STOCKcredentials.json', 'r')
+        load = json.load(file)
+        file.close()
+        file = open(f'{file_path}/credentials.json', 'w')
+        load["user"] = driver.find_elements(By.CLASS_NAME, "form-input")[0].get_attribute("value")
+        load["password"] = driver.find_elements(By.CLASS_NAME, "form-input")[1].get_attribute("value")
+        # print("Email: " + driver.find_elements(By.CLASS_NAME, "form-input")[0].get_attribute("value"))
+        # print("Password: " + driver.find_elements(By.CLASS_NAME, "form-input")[1].get_attribute("value"))
+        file.write(json.dumps(load))
+        file.close()
+        print(Fore.BLUE + "Credentails saved")
+
+    driver.find_elements(By.CLASS_NAME, "btn")[1].click()
 
 while (driver.current_url != 'https://app.usertesting.com/my_dashboard/available_tests_v3'):
     time.sleep(1)
