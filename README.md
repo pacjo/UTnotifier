@@ -26,3 +26,4 @@
 - [ ] make sure MQTT message are received
 - [ ] make script detect a difference between "1" and "10" in website title (now only looks at first digit)
 - [ ] add project icon
+- [ ] automatically detect chrome version and download proper webdriver
