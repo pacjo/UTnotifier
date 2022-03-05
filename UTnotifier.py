@@ -5,6 +5,7 @@ import signal
 import inspect
 import keyboard
 import argparse
+# import warnings
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -32,7 +33,7 @@ keyboard.on_press_key("r", lambda _: rHandler())
 # General purpose functions
 def numberOfTests():
     if (driver.title[0:1] == '('):
-        return int(driver.title[1:2])
+        return int(driver.title[1:driver.title.find(")")])
     else:
         return 0
 
