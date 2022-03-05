@@ -27,7 +27,8 @@
 - [x] ~~make option for disabling headless mode (argument option?)~~
 - [x] ~~add option to send notifications with MQTT (as sender.py ?)~~
 - [x] ~~automatically detect chrome version and download proper webdriver~~
+- [x] ~~make script detect a difference between "1" and "10" in website title (now only looks at first digit)~~
 - [ ] make sure MQTT message are received
-- [ ] make script detect a difference between "1" and "10" in website title (now only looks at first digit)
 - [ ] add project icon
 - [ ] properly kill webdriver
+- [ ] remove warnings when exiting script
