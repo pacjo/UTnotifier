@@ -8,6 +8,7 @@ import argparse
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import chromedriver_autoinstaller
 from colorama import init, Fore
 from plyer import notification
 
@@ -65,6 +66,8 @@ print(Fore.BLUE + "  \___/  |_||_| |_|\___/ \__|_|_| |_|\___|_|    ")
 print(Fore.MAGENTA + "\n https://github.com/pacjo/UTnotifier \n")
 
 # WebDriver initialization
+chromedriver_autoinstaller.install()
+
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
 options.add_argument("--mute-audio")
