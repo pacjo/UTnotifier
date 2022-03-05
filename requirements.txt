@@ -1,6 +1,12 @@
-plyer
-keyboard
-argparse
 selenium
+
+# Notifications
+plyer
+
+# Terminal enhancements
+argparse
+keyboard
 colorama
+
+# MQTT client
 paho-mqtt
