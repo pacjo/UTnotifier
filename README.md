@@ -31,4 +31,5 @@
 - [ ] make sure MQTT message are received
 - [ ] add project icon
 - [ ] properly kill webdriver
-- [ ] remove warnings when exiting script
+- [x] ~~remove warnings when exiting script~~
+- [ ] fix MQTT errors when server is unavailable
