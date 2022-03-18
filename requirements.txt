@@ -1,6 +1,6 @@
 # Selenium and webdriver
 selenium
-chromedriver-autoinstaller
+webdriver-manager
 
 # Notifications
 plyer

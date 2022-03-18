@@ -5,11 +5,9 @@ import signal
 import inspect
 import keyboard
 import argparse
-# import warnings
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import chromedriver_autoinstaller
 from colorama import init, Fore
 from plyer import notification
 
@@ -67,7 +65,9 @@ print(Fore.BLUE + "  \___/  |_||_| |_|\___/ \__|_|_| |_|\___|_|    ")
 print(Fore.MAGENTA + "\n https://github.com/pacjo/UTnotifier \n")
 
 # WebDriver initialization
-chromedriver_autoinstaller.install()
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+if (args.debug != True): os.environ['WDM_LOG_LEVEL'] = '0'
 
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
@@ -81,7 +81,7 @@ else:
 if (args.debug == True): print(Fore.BLUE + "Debugging is enabled, remove \"--debug\" or \"-d\" to disable it")
 
 try:
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     print(Fore.GREEN + "WebDriver started")
 except:
     print(Fore.RED + "Chrome WebDriver doesn't appear to be available. Make sure it's in PATH or in the script directory")
