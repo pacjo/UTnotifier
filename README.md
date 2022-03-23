@@ -32,4 +32,5 @@
 - [ ] add project icon
 - [ ] properly kill webdriver
 - [x] ~~remove warnings when exiting script~~
-- [ ] fix MQTT errors when server is unavailable
+- [x] ~~fix MQTT errors when server is unavailable~~
+- [ ] add MQTT TLS support
