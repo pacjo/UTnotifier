@@ -14,6 +14,7 @@ from plyer import notification
 # Register keyboard events handlers
 def ctrlcHandler(signum, frame):
     print(Fore.RED + "Killing webdriver")
+    driver.stop_client()
     # driver.close()
     driver.quit()
     print(Fore.RED + "Exiting")
@@ -36,7 +37,7 @@ def numberOfTests():
         return 0
 
 def sendMQTTMessage(payload):
-    os.system("python sender.py " + payload)
+    os.system(f"python {file_path}\sender.py " + payload)
 
 # Arguments (argparse) options
 parser = argparse.ArgumentParser(description='UserTesting.com notifier build with Selenium')
@@ -72,6 +73,7 @@ if (args.debug != True): os.environ['WDM_LOG_LEVEL'] = '0'
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
 options.add_argument("--mute-audio")
+# options.add_argument("--no-sandbox")      # Linux only
 if (args.disable_headless == True):
     options.add_argument("window-size=900,900")
 else:
