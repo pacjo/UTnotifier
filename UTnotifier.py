@@ -36,8 +36,8 @@ def numberOfTests():
     else:
         return 0
 
-def sendMQTTMessage(payload):
-    os.system(f"python {file_path}\sender.py " + payload)
+def sendMQTTMessage(payload, filepath):
+    os.system(f"python {filepath}\sender.py " + payload)
 
 # Arguments (argparse) options
 parser = argparse.ArgumentParser(description='UserTesting.com notifier build with Selenium')
@@ -141,7 +141,7 @@ while (True):
                 title="UTnotifier",
                 message="Number of available tests: " + str(last_count)
             )
-        if (args.disable_mqtt == False): sendMQTTMessage(str(last_count))
+        if (args.disable_mqtt == False): sendMQTTMessage(str(last_count), file_path)
 
     last_count = numberOfTests()
     time.sleep(20)

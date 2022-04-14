@@ -1,12 +1,20 @@
+import os
 import json
+import inspect
 import argparse
 import paho.mqtt.client as mqtt
 from colorama import init, Fore
+
+# Script path
+filename = inspect.getframeinfo(inspect.currentframe()).filename
+file_path = os.path.dirname(os.path.abspath(filename))
 
 # ArgParser configuration
 parser = argparse.ArgumentParser(description='Very simple MQTT publisher for UTnotifier')
 parser.add_argument('payload',
                     help='The payload to publish')
+parser.add_argument('filepath', nargs='?', default=file_path,
+                    help='Filepath of UTnotifier.py')
 
 args = parser.parse_args()
 
@@ -14,7 +22,7 @@ args = parser.parse_args()
 init(autoreset=True)
 
 # JSON
-file = open('credentials.json', 'r')
+file = open(f'{args.filepath}\credentials.json', 'r')
 load = json.load(file)
 json_mqtt = load.get('mqtt')
 host = json_mqtt['host']
