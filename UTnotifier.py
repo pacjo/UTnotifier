@@ -41,6 +41,8 @@ def sendMQTTMessage(payload, filepath):
 
 # Arguments (argparse) options
 parser = argparse.ArgumentParser(description='UserTesting.com notifier build with Selenium')
+parser.add_argument('browser', nargs='?', default="chrome",
+                    help='Browser that should be used for this session (default: chrome)')
 parser.add_argument('-dh', '--disable_headless', action='store_true',
                     help='Disables headless mode')
 parser.add_argument('-ds', '--disable_saving', action='store_true',
@@ -65,29 +67,43 @@ print(Fore.BLUE + " | |_| | | || | | | (_) | |_| |  _| |  __/ |    ")
 print(Fore.BLUE + "  \___/  |_||_| |_|\___/ \__|_|_| |_|\___|_|    ")
 print(Fore.MAGENTA + "\n https://github.com/pacjo/UTnotifier \n")
 
-# WebDriver initialization
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-if (args.debug != True): os.environ['WDM_LOG_LEVEL'] = '0'
-
-options = webdriver.ChromeOptions()
-options.add_experimental_option("excludeSwitches", ["enable-logging"])
-options.add_argument("--mute-audio")
-# options.add_argument("--no-sandbox")      # Linux only
-if (args.disable_headless == True):
-    options.add_argument("window-size=900,900")
+if (args.debug == True):
+    print(Fore.BLUE + "Debugging is enabled, remove \"--debug\" or \"-d\" to disable it")
 else:
-    options.add_argument('--headless')
-    options.add_argument('--disable-gpu')
+    os.environ['WDM_LOG_LEVEL'] = '0'
 
-if (args.debug == True): print(Fore.BLUE + "Debugging is enabled, remove \"--debug\" or \"-d\" to disable it")
 
-# try:
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-print(Fore.GREEN + "WebDriver started")
-# except:
-#     print(Fore.RED + "Chrome WebDriver doesn't appear to be available. Make sure it's in PATH or in the script directory")
-#     exit()
+# WebDriver initialization
+match args.browser:
+    case "chrome":      # Chrome
+        from selenium.webdriver.chrome.service import Service
+        from webdriver_manager.chrome import ChromeDriverManager
+
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option("excludeSwitches", ["enable-logging"])
+        options.add_argument("--mute-audio")
+        if (args.disable_headless == True):
+            options.add_argument("window-size=900,900")
+        else:
+            options.add_argument('--headless')
+            options.add_argument('--disable-gpu')
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        print(Fore.GREEN + "WebDriver started")
+
+    case "firefox":      # Firefox
+        from selenium.webdriver.firefox.service import Service
+        from webdriver_manager.firefox import GeckoDriverManager
+
+        options = webdriver.FirefoxOptions()
+        options.add_argument("--mute-audio")
+        if (args.disable_headless == True):
+            options.add_argument("window-size=900,900")
+        else:
+            options.add_argument('--headless')
+            options.add_argument('--disable-gpu')
+        driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
+        print(Fore.GREEN + "WebDriver started")
+
 
 # Access UT account
 driver.get('https://app.usertesting.com/my_dashboard/available_tests_v3')
