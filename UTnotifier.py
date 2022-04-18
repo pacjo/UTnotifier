@@ -82,12 +82,12 @@ else:
 
 if (args.debug == True): print(Fore.BLUE + "Debugging is enabled, remove \"--debug\" or \"-d\" to disable it")
 
-try:
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    print(Fore.GREEN + "WebDriver started")
-except:
-    print(Fore.RED + "Chrome WebDriver doesn't appear to be available. Make sure it's in PATH or in the script directory")
-    exit()
+# try:
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+print(Fore.GREEN + "WebDriver started")
+# except:
+#     print(Fore.RED + "Chrome WebDriver doesn't appear to be available. Make sure it's in PATH or in the script directory")
+#     exit()
 
 # Access UT account
 driver.get('https://app.usertesting.com/my_dashboard/available_tests_v3')
