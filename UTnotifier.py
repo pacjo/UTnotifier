@@ -104,7 +104,6 @@ match args.browser:
         driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
         print(Fore.GREEN + "WebDriver started")
 
-
 # Access UT account
 driver.get('https://app.usertesting.com/my_dashboard/available_tests_v3')
 
@@ -143,6 +142,13 @@ while (driver.current_url != 'https://app.usertesting.com/my_dashboard/available
     time.sleep(1)
 print(Fore.GREEN + "Logged in successfully, waiting for tests...")
 
+# Setup successful message
+notification.notify(
+    title="UTnotifier",
+    message="Setup completed successfully, UTnotifier is now running",
+    app_icon=f'{file_path}\\assets\\ut_icon.ico'
+)
+
 # Look for available tests
 last_count = 0
 counter = 0
@@ -155,7 +161,8 @@ while (True):
         if(args.disable_notifications == False):
             notification.notify(
                 title="UTnotifier",
-                message="Number of available tests: " + str(last_count)
+                message="Number of available tests: " + str(last_count),
+                app_icon=f'{file_path}\\assets\\ut_icon.ico'
             )
         if (args.disable_mqtt == False): sendMQTTMessage(str(last_count), file_path)
 
