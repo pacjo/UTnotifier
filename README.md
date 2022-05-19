@@ -1,4 +1,4 @@
-![logo](logo.png)
+![logo](assets/logo.png)
 
 <a href="https://www.paypal.com/donate?hosted_button_id=VKCHVWUV48STE" target="_blank">
 <img src="https://janbeta.net/wp-content/uploads/2020/06/Paypal-Donate.png" alt="Support me via PayPal" border="0" width="20%" height="20%"/>
