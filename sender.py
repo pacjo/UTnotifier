@@ -39,11 +39,13 @@ def on_connect(client, userdata, flags, rc):
 client = mqtt.Client()
 client.on_connect = on_connect
 
+client.username_pw_set(username, password=password)
+
 try:
     client.connect(host, port)
 
     # Publish message
-    client.publish(topic, args.payload)
+    client.publish(topic, payload=args.payload)
     print(Fore.GREEN + "MQTT message published")
 
     client.disconnect()
