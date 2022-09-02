@@ -1,0 +1,42 @@
+blueprint:
+  name: UTnotifier (mobile) notifier
+  description: Adds HA notifications to UTnotifier (via MQTT)
+  domain: automation
+  input:
+    mqtt_topic: 
+      name: MQTT topic
+      description: Topic used by your UTnotifier instance
+      default: UTnotifier
+    mobile_app_1:
+      name: Mobile app 1
+      description: (required) Anything with the companion app (eg. notify.mobile_app_1)
+      default: ''
+      # selector:
+      #   entity:
+      #     domain: notify
+    mobile_app_2:
+      name: Mobile app 2
+      description: (optional) Anything with the companion app (eg. notify.mobile_app_2)
+      default: ''
+      # selector:
+      #   device:
+      #     integration: notify
+      #     multiple: false
+
+trigger:
+  platform: mqtt
+  topic: !input mqtt_topic
+
+action:
+- service: !input mobile_app_1
+  data:
+    title: UTnotifier
+    message: "Number of tests changed to: {{ trigger.payload }}"
+    data:
+      actions:
+        - action: URI
+          title: UserTesting APP
+          uri: app://com.usertesting.recorder.krsna
+        - action: URI
+          title: VNC Viewer
+          uri: app://com.realvnc.viewer.android
