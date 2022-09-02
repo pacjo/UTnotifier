@@ -22,17 +22,7 @@
 `--debug` - shows additional information like page refresh
 
 # ToDo:
-- [x] ~~write better README~~ done?
-- [x] ~~check if one ***more*** or one ***less*** test is available~~
-- [x] ~~make ***disable saving credentials*** option~~
-- [x] ~~make better logo (fix offset)~~
-- [x] ~~make option for disabling headless mode (argument option?)~~
-- [x] ~~add option to send notifications with MQTT (as sender.py ?)~~
-- [x] ~~automatically detect chrome version and download proper webdriver~~
-- [x] ~~make script detect a difference between "1" and "10" in website title (now only looks at first digit)~~
 - [ ] make sure MQTT message are received
-- [ ] add project icon
+- [x] ~~add project icon~~
 - [ ] properly kill webdriver
-- [x] ~~remove warnings when exiting script~~
-- [x] ~~fix MQTT errors when server is unavailable~~
 - [ ] add MQTT TLS support
