@@ -4,6 +4,8 @@
 <img src="https://janbeta.net/wp-content/uploads/2020/06/Paypal-Donate.png" alt="Support me via PayPal" border="0" width="20%" height="20%"/>
 </a>
 
+[![my-ha blueprint badge]https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/pacjo/UTnotifier/main/addons/UTnotifier%20-%20HA%20blueprint.yaml)
+
 # How to run
 1. Install dependencies with `pip install -r requirements.txt`
 2. Run script with `python UTnotifier.py` (optional arguments available below)
