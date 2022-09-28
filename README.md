@@ -21,8 +21,13 @@
 
 `--debug` - shows additional information like page refresh
 
+# Notifications
+[instructions](notifications.md)
+
 # ToDo:
 - [ ] make sure MQTT message are received
 - [x] ~~add project icon~~
 - [ ] properly kill webdriver
 - [ ] add MQTT TLS support
+- [ ] rewrite login to support multiple tries
+- [ ] add notification instructions for PC and Home Assistant
