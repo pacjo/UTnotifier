@@ -4,6 +4,7 @@ webdriver-manager
 
 # Notifications
 plyer
+gotify
 
 # Terminal enhancements
 argparse
