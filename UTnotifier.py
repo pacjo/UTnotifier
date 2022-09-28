@@ -1,4 +1,4 @@
-import os
+import os, os.path
 import time
 import json
 import signal
@@ -9,7 +9,6 @@ from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from colorama import init, Fore
-from plyer import notification
 
 # Register keyboard events handlers
 def ctrlcHandler(signum, frame):
@@ -29,6 +28,7 @@ def rHandler():
 signal.signal(signal.SIGINT, ctrlcHandler)
 keyboard.on_press_key("r", lambda _: rHandler())
 
+
 # General purpose functions
 def numberOfTests():
     if (driver.title[0:1] == '('):
@@ -36,8 +36,34 @@ def numberOfTests():
     else:
         return 0
 
-def sendMQTTMessage(payload, filepath):
-    os.system(f"python {filepath}\sender.py " + payload)
+def checkIfLoggedIn(maxTries = 5):
+    loggedIn = False
+    for i in range(maxTries):
+        if (driver.current_url != 'https://app.usertesting.com/my_dashboard/available_tests_v3'):       # not logged in
+            time.sleep(1)
+        else:
+            loggedIn = True
+
+    return loggedIn
+
+def loginRoutine(maxTries = 3):
+    loggedIn = checkIfLoggedIn(3)       # max 3 tries
+    counter = 0
+    while (counter < 3 and loggedIn != True):
+        try:
+            file = open(f'{file_path}/credentials.json', 'r')
+            load = json.load(file)
+            user = load.get('user')
+            password = load.get('password')
+            file.close()
+            driver.find_elements(By.CLASS_NAME, "form-input")[0].send_keys(user)
+            driver.find_elements(By.CLASS_NAME, "form-input")[1].send_keys(password)
+            time.sleep(0.5)
+            driver.find_elements(By.CLASS_NAME, "btn")[1].click()
+        except:
+            print(f'{counter} continuing')
+            counter += 1
+
 
 # Arguments (argparse) options
 parser = argparse.ArgumentParser(description='UserTesting.com notifier build with Selenium')
@@ -110,17 +136,14 @@ driver.get('https://app.usertesting.com/my_dashboard/available_tests_v3')
 filename = inspect.getframeinfo(inspect.currentframe()).filename
 file_path = os.path.dirname(os.path.abspath(filename))
 
-try:
-    file = open(f'{file_path}/credentials.json', 'r')
-    load = json.load(file)
-    user = load.get('user')
-    password = load.get('password')
-    file.close()
-    driver.find_elements(By.CLASS_NAME, "form-input")[0].send_keys(user)
-    driver.find_elements(By.CLASS_NAME, "form-input")[1].send_keys(password)
-    time.sleep(0.5)
-    driver.find_elements(By.CLASS_NAME, "btn")[1].click()
-except:
+if (os.path.exists(f'{file_path}/credentials.json')):
+    # print("file found")
+    loginRoutine()
+else:
+    print(Fore.RED + "credentials.json not found," + Fore.GREEN + "continuing with manual login")
+    # saveCredentialsToFile()
+    # loginRoutine(3)
+
     print(Fore.GREEN + "Input the credentails than press enter " + Fore.RED + "in script window" + Fore.GREEN + " to continue")
     input()
     if (args.disable_saving != True):
@@ -138,16 +161,40 @@ except:
 
     driver.find_elements(By.CLASS_NAME, "btn")[1].click()
 
-while (driver.current_url != 'https://app.usertesting.com/my_dashboard/available_tests_v3'):
-    time.sleep(1)
+# try:
+#     file = open(f'{file_path}/credentials.json', 'r')
+#     load = json.load(file)
+#     user = load.get('user')
+#     password = load.get('password')
+#     file.close()
+#     driver.find_elements(By.CLASS_NAME, "form-input")[0].send_keys(user)
+#     driver.find_elements(By.CLASS_NAME, "form-input")[1].send_keys(password)
+#     time.sleep(0.5)
+#     driver.find_elements(By.CLASS_NAME, "btn")[1].click()
+# except:
+#     print(Fore.GREEN + "Input the credentails than press enter " + Fore.RED + "in script window" + Fore.GREEN + " to continue")
+#     input()
+#     if (args.disable_saving != True):
+#         file = open(f'{file_path}/STOCKcredentials.json', 'r')
+#         load = json.load(file)
+#         file.close()
+#         file = open(f'{file_path}/credentials.json', 'w')
+#         load["user"] = driver.find_elements(By.CLASS_NAME, "form-input")[0].get_attribute("value")
+#         load["password"] = driver.find_elements(By.CLASS_NAME, "form-input")[1].get_attribute("value")
+#         # print("Email: " + driver.find_elements(By.CLASS_NAME, "form-input")[0].get_attribute("value"))
+#         # print("Password: " + driver.find_elements(By.CLASS_NAME, "form-input")[1].get_attribute("value"))
+#         file.write(json.dumps(load))
+#         file.close()
+#         print(Fore.BLUE + "Credentails saved")
+
+#     driver.find_elements(By.CLASS_NAME, "btn")[1].click()
+
+while (checkIfLoggedIn() != True):
+    pass
 print(Fore.GREEN + "Logged in successfully, waiting for tests...")
 
-# Setup successful message
-notification.notify(
-    title="UTnotifier",
-    message="Setup completed successfully, UTnotifier is now running",
-    app_icon=f'{file_path}\\assets\\ut_icon.ico'
-)
+# Show setup succesfull
+os.system(f"python notifier.py \"Setup completed successfully, UTnotifier is now running\" --local")
 
 # Look for available tests
 last_count = 0
@@ -158,13 +205,8 @@ while (True):
     if (numberOfTests() > last_count):
         last_count = numberOfTests()
         print(Fore.BLUE + datetime.now().strftime("%H:%M:%S") + ": NEW TEST AVAILABLE: " + Fore.RED + str(last_count))
-        if(args.disable_notifications == False):
-            notification.notify(
-                title="UTnotifier",
-                message="Number of available tests: " + str(last_count),
-                app_icon=f'{file_path}\\assets\\ut_icon.ico'
-            )
-        if (args.disable_mqtt == False): sendMQTTMessage(str(last_count), file_path)
+        if(args.disable_notifications == False): os.system(f"python notifier.py \"Number of available tests: {str(last_count)}\" --local")
+        if(args.disable_mqtt == False): os.system(f"python notifier.py \"{str(last_count)}\" --mqtt")
 
     last_count = numberOfTests()
     time.sleep(20)
