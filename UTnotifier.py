@@ -10,6 +10,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from colorama import init, Fore
 
+# Global variables
+paused = False
+
 # Register keyboard events handlers
 def ctrlcHandler(signum, frame):
     print(Fore.RED + "Killing webdriver")
@@ -22,11 +25,18 @@ def ctrlcHandler(signum, frame):
 def rHandler():
     if (driver.current_url == 'https://app.usertesting.com/my_dashboard/available_tests_v3'):
         driver.refresh()
-        print(Fore.CYAN + "R key detected, title: " + Fore.GREEN + driver.title + Fore.CYAN + ", number of tests: " + Fore.GREEN + str(numberOfTests()))
+        print(Fore.CYAN + "Refresh key detected, title: " + Fore.GREEN + driver.title + Fore.CYAN + ", number of tests: " + Fore.GREEN + str(numberOfTests()))
     else: print(Fore.RED + "Page has not loaded yet")
 
+def pCtrlShiftHandler():
+    global paused       # mark paused as global
+    paused = not paused
+    if (paused): print(Fore.CYAN + "Script paused")
+    else: print(Fore.CYAN + "Script resumed")
+
 signal.signal(signal.SIGINT, ctrlcHandler)
-keyboard.on_press_key("r", lambda _: rHandler())
+keyboard.add_hotkey("r+ctrl+shift", lambda: rHandler())
+keyboard.add_hotkey("p+ctrl+shift", lambda: pCtrlShiftHandler())
 
 
 # General purpose functions
@@ -200,7 +210,7 @@ os.system(f"python notifier.py \"Setup completed successfully, UTnotifier is now
 last_count = 0
 counter = 0
 
-while (True):
+while (True and (paused != True)):
     time.sleep(10)
     if (numberOfTests() > last_count):
         last_count = numberOfTests()
