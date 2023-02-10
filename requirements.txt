@@ -3,13 +3,9 @@ selenium
 webdriver-manager
 
 # Notifications
-plyer
-gotify
+apprise
 
 # Terminal enhancements
 argparse
 keyboard
 colorama
-
-# MQTT client
-paho-mqtt

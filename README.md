@@ -17,17 +17,16 @@
 
 `--disable_notifications` - disables showing notification when new test is available
 
-`--disable_mqtt` - disables publishing the test count to MQTT server
-
 `--debug` - shows additional information like page refresh
 
 # Notifications
-[instructions](notifications.md)
+Everything is handled through [Apprise](https://github.com/caronc/apprise).
+Just add Apprise URLs to `credentials.json` as shown is `STOCkcredentials.json`
 
 # ToDo:
 - [ ] make sure MQTT message are received
 - [x] ~~add project icon~~
 - [ ] properly kill webdriver
 - [ ] add MQTT TLS support
-- [ ] rewrite login to support multiple tries
-- [ ] add notification instructions for PC and Home Assistant
+- [x] rewrite login to support multiple tries
+- [x] add notification instructions
