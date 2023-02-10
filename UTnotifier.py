@@ -174,7 +174,7 @@ while (checkIfLoggedIn() != True):
 print(Fore.GREEN + "Logged in successfully, waiting for tests...")
 
 # Show setup succesfull (local popup)
-os.system(f"python notifier.py \"Setup completed successfully, UTnotifier is now running\" --local")
+os.system(f"python notifier.py \"Setup completed successfully, UTnotifier is now running\"")
 
 # Look for available tests
 last_count = 0
