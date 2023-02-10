@@ -117,7 +117,7 @@ match args.browser:
         options.add_experimental_option("excludeSwitches", ["enable-logging"])
         options.add_argument("--mute-audio")
         if (args.disable_headless == True):
-            options.add_argument("window-size=900,900")
+            options.add_argument("window-size=800,900")
         else:
             options.add_argument('--headless')
             options.add_argument('--disable-gpu')
@@ -131,7 +131,7 @@ match args.browser:
         options = webdriver.FirefoxOptions()
         options.add_argument("--mute-audio")
         if (args.disable_headless == True):
-            options.add_argument("window-size=900,900")
+            options.add_argument("window-size=800,900")
         else:
             options.add_argument('--headless')
             options.add_argument('--disable-gpu')
