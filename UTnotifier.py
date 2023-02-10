@@ -84,7 +84,7 @@ parser.add_argument('-dh', '--disable_headless', action='store_true',
 parser.add_argument('-ds', '--disable_saving', action='store_true',
                     help='Stops script from saving login details')
 parser.add_argument('-dn', '--disable_notifications', action='store_true',
-                    help='Stops script showing system notifications')
+                    help='Disables all notifiactions')
 parser.add_argument('-d', '--debug', action='store_true',
                     help='Shows debug messages like refresh information')
 
@@ -186,7 +186,7 @@ while (True and (paused != True)):
         last_count = numberOfTests()
         print(Fore.BLUE + datetime.now().strftime("%H:%M:%S") + ": NEW TEST AVAILABLE: " + Fore.RED + str(last_count))
         if(args.disable_notifications == False): 
-            os.system(f"python notifier.py")
+            os.system(f"python notifier.py \"Number of available tests: {str(last_count)}\"")
 
     last_count = numberOfTests()
     time.sleep(20)
