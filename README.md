@@ -27,6 +27,6 @@ Just add Apprise URLs to `credentials.json` as shown is `STOCkcredentials.json`
 - [ ] make sure MQTT message are received
 - [x] ~~add project icon~~
 - [ ] properly kill webdriver
-- [ ] add MQTT TLS support
+- [x] add MQTT TLS support
 - [x] rewrite login to support multiple tries
 - [x] add notification instructions
