@@ -39,7 +39,7 @@ keyboard.add_hotkey("r+ctrl+shift", lambda: rHandler())
 keyboard.add_hotkey("p+ctrl+shift", lambda: pCtrlShiftHandler())
 
 
-# General purpose functions
+# General purpose functions for webdriver
 def numberOfTests():
     if (driver.title[0:1] == '('):
         return int(driver.title[1:driver.title.find(")")])
@@ -83,8 +83,6 @@ parser.add_argument('-dh', '--disable_headless', action='store_true',
                     help='Disables headless mode')
 parser.add_argument('-ds', '--disable_saving', action='store_true',
                     help='Stops script from saving login details')
-parser.add_argument('-dm', '--disable_mqtt', action='store_true',
-                    help='Stops script from publishing data to mqtt server')
 parser.add_argument('-dn', '--disable_notifications', action='store_true',
                     help='Stops script showing system notifications')
 parser.add_argument('-d', '--debug', action='store_true',
