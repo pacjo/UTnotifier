@@ -28,15 +28,15 @@ def rHandler():
         print(Fore.CYAN + "Refresh key detected, title: " + Fore.GREEN + driver.title + Fore.CYAN + ", number of tests: " + Fore.GREEN + str(numberOfTests()))
     else: print(Fore.RED + "Page has not loaded yet")
 
-def pCtrlShiftHandler():
+def qCtrlShiftHandler():
     global paused       # mark paused as global
     paused = not paused
-    if (paused): print(Fore.CYAN + "Script paused")
+    if (paused): print(Fore.CYAN + "Script paused (press q+ctrl+shift to resume)")
     else: print(Fore.CYAN + "Script resumed")
 
 signal.signal(signal.SIGINT, ctrlcHandler)
 keyboard.add_hotkey("r+ctrl+shift", lambda: rHandler())
-keyboard.add_hotkey("p+ctrl+shift", lambda: pCtrlShiftHandler())
+keyboard.add_hotkey("q+ctrl+shift", lambda: qCtrlShiftHandler())
 
 
 # General purpose functions for webdriver
