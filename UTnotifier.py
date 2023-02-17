@@ -41,10 +41,14 @@ keyboard.add_hotkey("q+ctrl+shift", lambda: qCtrlShiftHandler())
 
 # General purpose functions for webdriver
 def numberOfTests():
-    if (driver.title[0:1] == '('):
-        return int(driver.title[1:driver.title.find(")")])
-    else:
-        return 0
+    try:
+        title = driver.title
+        if (title[0:1] == '('):
+            return int(title[1:title.find(")")])
+        else:
+            return 0
+    except TimeoutException:
+        return 0                # return 0 on TimeoutException (this should fix crashes when internet connection is dropped)
 
 def checkIfLoggedIn(maxTries = 5):
     loggedIn = False
