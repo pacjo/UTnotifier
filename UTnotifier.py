@@ -23,7 +23,7 @@ def ctrlcHandler(signum, frame):
     print(Fore.RED + "Exiting")
     exit()
 
-def rHandler():
+def rCtrlShiftHandler():
     if (driver.current_url == 'https://app.usertesting.com/my_dashboard/available_tests_v3'):
         driver.refresh()
         print(Fore.CYAN + "Refresh key detected, title: " + Fore.GREEN + driver.title + Fore.CYAN + ", number of tests: " + Fore.GREEN + str(numberOfTests()))
@@ -36,7 +36,7 @@ def qCtrlShiftHandler():
     else: print(Fore.CYAN + "Script resumed")
 
 signal.signal(signal.SIGINT, ctrlcHandler)
-keyboard.add_hotkey("r+ctrl+shift", lambda: rHandler())
+keyboard.add_hotkey("r+ctrl+shift", lambda: rCtrlShiftHandler())
 keyboard.add_hotkey("q+ctrl+shift", lambda: qCtrlShiftHandler())
 
 
