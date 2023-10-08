@@ -4,5 +4,10 @@ __pycache__
 # ignore all exe files (to avoid pushing webdrivers)
 *.exe
 
-# credentials file
+# Ignore the actual credentials and apprise config files
 credentials.json
+apprise.yaml
+
+# ...but allow examples
+!credentials.example.json
+!apprise.example.yaml
