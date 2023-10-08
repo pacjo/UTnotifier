@@ -8,7 +8,7 @@
 
 # How to run
 1. Install dependencies with `pip install -r requirements.txt`
-2. Run script with `python UTnotifier.py` (optional arguments available below)
+2. Run script with `python main.py`
 
 # Arguments (use -h to see usage)
 `--disable_headless` - disables headless mode
@@ -21,12 +21,9 @@
 
 # Notifications
 Everything is handled through [Apprise](https://github.com/caronc/apprise).
-Just add Apprise URLs to `credentials.json` as shown is `STOCkcredentials.json`
+Just add your `apprise.yaml`, basic `apprise.example.yaml` is available.
 
 # ToDo:
-- [ ] make sure MQTT message are received
-- [x] ~~add project icon~~
-- [ ] properly kill webdriver
-- [x] add MQTT TLS support
-- [x] rewrite login to support multiple tries
-- [x] add notification instructions
+- [ ] add project icon
+- [ ] support other browsers (firefox for now)
+- [ ] add optional arguments / options in configuration json
