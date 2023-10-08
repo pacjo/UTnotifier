@@ -19,7 +19,7 @@ if __name__ == '__main__':
     print(Fore.BLUE + "  \___/  |_||_| |_|\___/ \__|_|_| |_|\___|_|    ")
     print(Fore.MAGENTA + "\n https://github.com/pacjo/UTnotifier \n")
 
-    with open('credentials.json', 'r') as file:
+    with open('config.json', 'r') as file:
         load = json.load(file)
         username = load.get('user')
         password = load.get('password')

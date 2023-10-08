@@ -6,16 +6,8 @@
 
 # How to run
 1. Install dependencies with `pip install -r requirements.txt`
-2. Run script with `python main.py`
-
-# Arguments (use -h to see usage)
-`--disable_headless` - disables headless mode
-
-`--disable_saving` - disables saving of login details (currently not implemented)
-
-`--disable_notifications` - disables showing notification when new test is available
-
-`--debug` - shows additional information like page refresh
+2. Rename `config.example.json` to `config.json`, add your credentials to it
+3. Run script with `python main.py`
 
 # Notifications
 Everything is handled through [Apprise](https://github.com/caronc/apprise).

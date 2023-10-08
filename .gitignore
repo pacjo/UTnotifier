@@ -5,9 +5,9 @@ __pycache__
 *.exe
 
 # Ignore the actual credentials and apprise config files
-credentials.json
+config.json
 apprise.yaml
 
 # ...but allow examples
-!credentials.example.json
+!config.example.json
 !apprise.example.yaml

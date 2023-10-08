@@ -1,0 +1,6 @@
+{
+  "user": "somemail@example.com",
+  "password": "verystrongpassword",
+  "browser": "chrome",
+  "debug": "false"
+}
